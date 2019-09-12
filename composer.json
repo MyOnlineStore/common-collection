@@ -1,0 +1,32 @@
+{
+    "name": "myonlinestore/common-collection",
+    "type": "library",
+    "description": "MyOnlineStore common collection",
+    "homepage": "https://github.com/MyOnlineStore/common-collection",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "MyOnlineStore\\Common\\Collection\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "MyOnlineStore\\Common\\Collection\\Tests\\": "tests/"
+        }
+    },
+    "require": {
+        "php": "^7.0"
+    },
+    "require-dev": {
+        "myonlinestore/coding-standard": "^1.0",
+        "phpmd/phpmd": "^2.7",
+        "phpunit/phpunit": "^6"
+    },
+    "config": {
+        "vendor-dir": "vendor",
+        "sort-packages": true,
+        "platform": {
+            "php": "7.0.33"
+        }
+    }
+}
