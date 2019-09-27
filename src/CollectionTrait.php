@@ -5,6 +5,14 @@ namespace MyOnlineStore\Common\Collection;
 
 trait CollectionTrait
 {
+    /**
+     * @return static
+     */
+    public function clear()
+    {
+        return new static();
+    }
+
     public function isEmpty(): bool
     {
         return 0 === \count($this);

@@ -24,4 +24,9 @@ final class Strings extends TypedCollection
     {
         return \is_string($element);
     }
+
+    public function join(string $glue = ''): string
+    {
+        return \implode($glue, $this->getArrayCopy());
+    }
 }
