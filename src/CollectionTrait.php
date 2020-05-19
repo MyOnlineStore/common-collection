@@ -7,6 +7,8 @@ trait CollectionTrait
 {
     /**
      * @return static
+     * @deprecated Use \MyOnlineStore\Common\Collection\ClearTrait
+     *
      */
     public function clear()
     {
