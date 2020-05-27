@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 final class FilterTraitTest extends TestCase
 {
-    public function testFirstHavingWillThrowExceptionIfNoMatchIsFound()
+    public function testFirstHavingWillThrowExceptionIfNoMatchIsFound(): void
     {
         $element1 = $this->getMockBuilder(\stdClass::class)
             ->addMethods(['isFoobar'])

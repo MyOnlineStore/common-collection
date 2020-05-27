@@ -10,7 +10,7 @@ trait TypedCollectionTrait
      *
      * @throws \InvalidArgumentException
      */
-    public function assertAcceptedElement($element)
+    public function assertAcceptedElement($element): void
     {
         if (!$this->isAcceptedElement($element)) {
             throw new \InvalidArgumentException(
@@ -26,7 +26,7 @@ trait TypedCollectionTrait
      *
      * @throws \InvalidArgumentException
      */
-    public function assertArray(array $array)
+    public function assertArray(array $array): void
     {
         \array_walk($array, [$this, 'assertAcceptedElement']);
     }

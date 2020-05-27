@@ -11,7 +11,7 @@ final class IntegersTest extends TestCase
     /**
      * @throws \InvalidArgumentException
      */
-    public function testFromArray()
+    public function testFromArray(): void
     {
         self::assertEquals(new Integers([1, 14, 15, 16]), Integers::fromArray([true, '14', 15, 0x10]));
     }
@@ -19,7 +19,7 @@ final class IntegersTest extends TestCase
     /**
      * @throws \InvalidArgumentException
      */
-    public function testIsAcceptedElement()
+    public function testIsAcceptedElement(): void
     {
         $collection = new Integers();
 

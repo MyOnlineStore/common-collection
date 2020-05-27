@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 final class TypedCollectionTraitTest extends TestCase
 {
-    public function testAssertArray()
+    public function testAssertArray(): void
     {
         $element = new \stdClass();
 
@@ -24,7 +24,7 @@ final class TypedCollectionTraitTest extends TestCase
         $typedCollection->assertArray([$element]);
     }
 
-    public function testAssertAcceptedElementWillThrowExceptionOnUnacceptedElement()
+    public function testAssertAcceptedElementWillThrowExceptionOnUnacceptedElement(): void
     {
         $element = new \stdClass();
 
@@ -43,7 +43,7 @@ final class TypedCollectionTraitTest extends TestCase
         $typedCollection->assertAcceptedElement($element);
     }
 
-    public function testAssertAcceptedElementWillDoNothingOnAcceptedElement()
+    public function testAssertAcceptedElementWillDoNothingOnAcceptedElement(): void
     {
         $element = new \stdClass();
 

@@ -8,10 +8,9 @@ use PHPUnit\Framework\TestCase;
 
 final class TypedIndexedCollectionTest extends TestCase
 {
-    public function testConstructWillAssertElementsAndIndices()
+    public function testConstructWillAssertElementsAndIndices(): void
     {
-        $collection = new class extends TypedIndexedCollection
-        {
+        $collection = new class extends TypedIndexedCollection {
             public function isAcceptedElement($element): bool
             {
                 return true;
@@ -23,6 +22,9 @@ final class TypedIndexedCollectionTest extends TestCase
             }
         };
 
-        self::assertInstanceOf(TypedIndexedCollection::class, new $collection([$this->createMock(\stdClass::class)]));
+        self::assertInstanceOf(
+            TypedIndexedCollection::class,
+            new $collection([$this->createMock(\stdClass::class)])
+        );
     }
 }

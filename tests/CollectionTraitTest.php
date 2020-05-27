@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 final class CollectionTraitTest extends TestCase
 {
-    public function testFirstHavingWillReturnCorrectElements()
+    public function testFirstHavingWillReturnCorrectElements(): void
     {
         $element1 = $this->getMockBuilder(\stdClass::class)
             ->addMethods(['isFoobar'])
@@ -24,9 +24,8 @@ final class CollectionTraitTest extends TestCase
             ->method('isFoobar')
             ->willReturn(true);
 
-        $extendedClass = new class([$element1, $element2]) extends Collection
-        {
-            public function firstHaving(callable $callback)
+        $extendedClass = new class([$element1, $element2]) extends Collection {
+            public function firstHaving(callable $callback): \stdClass
             {
                 {
                     return parent::firstHaving($callback);
@@ -37,14 +36,14 @@ final class CollectionTraitTest extends TestCase
         self::assertSame(
             $element2,
             $extendedClass->firstHaving(
-                static function (\stdClass $element) {
+                static function (\stdClass $element): \stdClass {
                     return $element->isFoobar();
                 }
             )
         );
     }
 
-    public function testFirstHavingWillThrowExceptionIfNoMatchIsFound()
+    public function testFirstHavingWillThrowExceptionIfNoMatchIsFound(): void
     {
         $element1 = $this->getMockBuilder(\stdClass::class)
             ->addMethods(['isFoobar'])
@@ -59,9 +58,8 @@ final class CollectionTraitTest extends TestCase
             ->method('isFoobar')
             ->willReturn(false);
 
-        $extendedClass = new class([$element1, $element2]) extends Collection
-        {
-            public function firstHaving(callable $callback)
+        $extendedClass = new class([$element1, $element2]) extends Collection {
+            public function firstHaving(callable $callback): \stdClass
             {
                 {
                     return parent::firstHaving($callback);
@@ -74,25 +72,22 @@ final class CollectionTraitTest extends TestCase
         self::assertSame(
             $element2,
             $extendedClass->firstHaving(
-                static function (\stdClass $element) {
+                static function (\stdClass $element): \stdClass {
                     return $element->isFoobar();
                 }
             )
         );
     }
 
-    public function testIsEmpty()
+    public function testIsEmpty(): void
     {
-        $collection1 = new class extends \ArrayObject
-        {
+        $collection1 = new class extends \ArrayObject {
             use CollectionTrait;
         };
-        $collection2 = new class(['foo']) extends \ArrayObject
-        {
+        $collection2 = new class(['foo']) extends \ArrayObject {
             use CollectionTrait;
         };
-        $collection3 = new class([null]) extends \ArrayObject
-        {
+        $collection3 = new class([null]) extends \ArrayObject {
             use CollectionTrait;
         };
 

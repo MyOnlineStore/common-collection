@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 final class ClearTraitTest extends TestCase
 {
-    public function testClearReturnsNewInstance()
+    public function testClearReturnsNewInstance(): void
     {
         $collection = new class(['foo']) extends \ArrayObject {
             use ClearTrait;
@@ -20,7 +20,7 @@ final class ClearTraitTest extends TestCase
         self::assertInstanceOf(\get_class($collection), $clearedCollection);
     }
 
-    public function testClearRemovesItems()
+    public function testClearRemovesItems(): void
     {
         $collection = new class(['foo']) extends \ArrayObject {
             use ClearTrait;

@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 final class TypedIndexedCollectionTraitTest extends TestCase
 {
-    public function testAssertArray()
+    public function testAssertArray(): void
     {
         $index = 'foo';
         $element = new \stdClass();
@@ -29,7 +29,7 @@ final class TypedIndexedCollectionTraitTest extends TestCase
         $typedCollection->assertArray([$index => $element]);
     }
 
-    public function testAssertAcceptedIndexWillThrowExceptionOnUnacceptedElement()
+    public function testAssertAcceptedIndexWillThrowExceptionOnUnacceptedElement(): void
     {
         $index = 'foo';
 
@@ -48,7 +48,7 @@ final class TypedIndexedCollectionTraitTest extends TestCase
         $typedCollection->assertAcceptedIndex($index);
     }
 
-    public function testAssertAcceptedIndexWillDoNothingOnAcceptedElement()
+    public function testAssertAcceptedIndexWillDoNothingOnAcceptedElement(): void
     {
         $index = 'foo';
 
