@@ -8,20 +8,21 @@ use PHPUnit\Framework\TestCase;
 
 final class TypedCollectionTraitTest extends TestCase
 {
-    public function testAssertArray(): void
+    public function testAssertAcceptedElementWillDoNothingOnAcceptedElement(): void
     {
         $element = new \stdClass();
 
         $typedCollection = $this->getMockBuilder(TypedCollectionTrait::class)
-            ->onlyMethods(['assertAcceptedElement'])
+            ->onlyMethods(['isAcceptedElement'])
             ->getMockForTrait();
 
         $typedCollection->expects(self::once())
-            ->method('assertAcceptedElement')
-            ->with($element);
+            ->method('isAcceptedElement')
+            ->with($element)
+            ->willReturn(true);
 
         /** @noinspection PhpUndefinedMethodInspection */
-        $typedCollection->assertArray([$element]);
+        $typedCollection->assertAcceptedElement($element);
     }
 
     public function testAssertAcceptedElementWillThrowExceptionOnUnacceptedElement(): void
@@ -43,20 +44,19 @@ final class TypedCollectionTraitTest extends TestCase
         $typedCollection->assertAcceptedElement($element);
     }
 
-    public function testAssertAcceptedElementWillDoNothingOnAcceptedElement(): void
+    public function testAssertArray(): void
     {
         $element = new \stdClass();
 
         $typedCollection = $this->getMockBuilder(TypedCollectionTrait::class)
-            ->onlyMethods(['isAcceptedElement'])
+            ->onlyMethods(['assertAcceptedElement'])
             ->getMockForTrait();
 
         $typedCollection->expects(self::once())
-            ->method('isAcceptedElement')
-            ->with($element)
-            ->willReturn(true);
+            ->method('assertAcceptedElement')
+            ->with($element);
 
         /** @noinspection PhpUndefinedMethodInspection */
-        $typedCollection->assertAcceptedElement($element);
+        $typedCollection->assertArray([$element]);
     }
 }

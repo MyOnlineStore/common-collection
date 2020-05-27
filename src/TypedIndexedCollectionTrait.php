@@ -28,7 +28,7 @@ trait TypedIndexedCollectionTrait
     {
         foreach ($array as $index => $element) {
             // Cast to string since PHP converted numeric strings to integers
-            $this->assertAcceptedIndex((string)$index);
+            $this->assertAcceptedIndex((string) $index);
             $this->assertAcceptedElement($element);
         }
     }

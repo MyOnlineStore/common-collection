@@ -8,15 +8,6 @@ use PHPUnit\Framework\TestCase;
 
 final class ClearTraitTest extends TestCase
 {
-    public function testClearReturnsNewInstance(): void
-    {
-        $collection = $this->createCollection(['foo']);
-        $clearedCollection = $collection->clear();
-
-        self::assertNotSame($collection, $clearedCollection);
-        self::assertInstanceOf(\get_class($collection), $clearedCollection);
-    }
-
     public function testClearRemovesItems(): void
     {
         $collection = $this->createCollection(['foo']);
@@ -25,6 +16,15 @@ final class ClearTraitTest extends TestCase
 
         self::assertNotEmpty($collection->getArrayCopy());
         self::assertEmpty($clearedCollection->getArrayCopy());
+    }
+
+    public function testClearReturnsNewInstance(): void
+    {
+        $collection = $this->createCollection(['foo']);
+        $clearedCollection = $collection->clear();
+
+        self::assertNotSame($collection, $clearedCollection);
+        self::assertInstanceOf(\get_class($collection), $clearedCollection);
     }
 
     /**
