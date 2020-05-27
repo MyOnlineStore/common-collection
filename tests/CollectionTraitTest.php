@@ -9,14 +9,6 @@ use PHPUnit\Framework\TestCase;
 
 final class CollectionTraitTest extends TestCase
 {
-    public function testClear()
-    {
-        $collection = $this->getMockForTrait(CollectionTrait::class);
-        $clearedCollection = $collection->clear();
-        self::assertNotSame($collection, $clearedCollection);
-        self::assertInstanceOf(\get_class($collection), $clearedCollection);
-    }
-
     public function testFirstHavingWillReturnCorrectElements()
     {
         $element1 = $this->getMockBuilder(\stdClass::class)
