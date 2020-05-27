@@ -12,10 +12,10 @@ final class CollectionTraitTest extends TestCase
     public function testFirstHavingWillReturnCorrectElements()
     {
         $element1 = $this->getMockBuilder(\stdClass::class)
-            ->setMethods(['isFoobar'])
+            ->addMethods(['isFoobar'])
             ->getMock();
         $element2 = $this->getMockBuilder(\stdClass::class)
-            ->setMethods(['isFoobar'])
+            ->addMethods(['isFoobar'])
             ->getMock();
         $element1->expects(self::once())
             ->method('isFoobar')
@@ -33,6 +33,7 @@ final class CollectionTraitTest extends TestCase
                 }
             }
         };
+
         self::assertSame(
             $element2,
             $extendedClass->firstHaving(
@@ -46,10 +47,10 @@ final class CollectionTraitTest extends TestCase
     public function testFirstHavingWillThrowExceptionIfNoMatchIsFound()
     {
         $element1 = $this->getMockBuilder(\stdClass::class)
-            ->setMethods(['isFoobar'])
+            ->addMethods(['isFoobar'])
             ->getMock();
         $element2 = $this->getMockBuilder(\stdClass::class)
-            ->setMethods(['isFoobar'])
+            ->addMethods(['isFoobar'])
             ->getMock();
         $element1->expects(self::once())
             ->method('isFoobar')
@@ -94,6 +95,7 @@ final class CollectionTraitTest extends TestCase
         {
             use CollectionTrait;
         };
+
         self::assertTrue($collection1->isEmpty());
         self::assertFalse($collection2->isEmpty());
         self::assertFalse($collection3->isEmpty());

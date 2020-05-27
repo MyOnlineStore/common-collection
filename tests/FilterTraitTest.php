@@ -12,10 +12,10 @@ final class FilterTraitTest extends TestCase
     public function testFirstHavingWillThrowExceptionIfNoMatchIsFound()
     {
         $element1 = $this->getMockBuilder(\stdClass::class)
-            ->setMethods(['isFoobar'])
+            ->addMethods(['isFoobar'])
             ->getMock();
         $element2 = $this->getMockBuilder(\stdClass::class)
-            ->setMethods(['isFoobar'])
+            ->addMethods(['isFoobar'])
             ->getMock();
         $element1->expects(self::once())
             ->method('isFoobar')

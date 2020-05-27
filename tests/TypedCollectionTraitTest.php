@@ -13,7 +13,7 @@ final class TypedCollectionTraitTest extends TestCase
         $element = new \stdClass();
 
         $typedCollection = $this->getMockBuilder(TypedCollectionTrait::class)
-            ->setMethods(['assertAcceptedElement'])
+            ->onlyMethods(['assertAcceptedElement'])
             ->getMockForTrait();
 
         $typedCollection->expects(self::once())
@@ -29,7 +29,7 @@ final class TypedCollectionTraitTest extends TestCase
         $element = new \stdClass();
 
         $typedCollection = $this->getMockBuilder(TypedCollectionTrait::class)
-            ->setMethods(['isAcceptedElement'])
+            ->onlyMethods(['isAcceptedElement'])
             ->getMockForTrait();
 
         $typedCollection->expects(self::once())
@@ -48,7 +48,7 @@ final class TypedCollectionTraitTest extends TestCase
         $element = new \stdClass();
 
         $typedCollection = $this->getMockBuilder(TypedCollectionTrait::class)
-            ->setMethods(['isAcceptedElement'])
+            ->onlyMethods(['isAcceptedElement'])
             ->getMockForTrait();
 
         $typedCollection->expects(self::once())

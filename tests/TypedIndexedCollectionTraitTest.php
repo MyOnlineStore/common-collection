@@ -14,7 +14,7 @@ final class TypedIndexedCollectionTraitTest extends TestCase
         $element = new \stdClass();
 
         $typedCollection = $this->getMockBuilder(TypedIndexedCollectionTrait::class)
-            ->setMethods(['assertAcceptedIndex', 'assertAcceptedElement'])
+            ->onlyMethods(['assertAcceptedIndex', 'assertAcceptedElement'])
             ->getMockForTrait();
 
         $typedCollection->expects(self::once())
@@ -34,7 +34,7 @@ final class TypedIndexedCollectionTraitTest extends TestCase
         $index = 'foo';
 
         $typedCollection = $this->getMockBuilder(TypedIndexedCollectionTrait::class)
-            ->setMethods(['isAcceptedIndex'])
+            ->onlyMethods(['isAcceptedIndex'])
             ->getMockForTrait();
 
         $typedCollection->expects(self::once())
@@ -53,7 +53,7 @@ final class TypedIndexedCollectionTraitTest extends TestCase
         $index = 'foo';
 
         $typedCollection = $this->getMockBuilder(TypedIndexedCollectionTrait::class)
-            ->setMethods(['isAcceptedIndex'])
+            ->onlyMethods(['isAcceptedIndex'])
             ->getMockForTrait();
 
         $typedCollection->expects(self::once())
