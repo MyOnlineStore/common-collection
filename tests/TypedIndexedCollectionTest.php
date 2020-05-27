@@ -10,6 +10,7 @@ final class TypedIndexedCollectionTest extends TestCase
 {
     public function testConstructWillAssertElementsAndIndices(): void
     {
+        // phpcs:disable
         $collection = new class extends TypedIndexedCollection {
             public function isAcceptedElement($element): bool
             {
@@ -21,6 +22,7 @@ final class TypedIndexedCollectionTest extends TestCase
                 return true;
             }
         };
+        // phpcs:enable
 
         self::assertInstanceOf(
             TypedIndexedCollection::class,

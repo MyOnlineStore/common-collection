@@ -10,12 +10,14 @@ final class TypedCollectionTest extends TestCase
 {
     public function testConstructWillAssertElements(): void
     {
+        // phpcs:disable
         $collection = new class extends TypedCollection {
             public function isAcceptedElement($element): bool
             {
                 return true;
             }
         };
+        // phpcs:enable
 
         self::assertInstanceOf(
             TypedCollection::class,

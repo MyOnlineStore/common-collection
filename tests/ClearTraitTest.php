@@ -10,10 +10,7 @@ final class ClearTraitTest extends TestCase
 {
     public function testClearReturnsNewInstance(): void
     {
-        $collection = new class(['foo']) extends \ArrayObject {
-            use ClearTrait;
-        };
-
+        $collection = $this->createCollection(['foo']);
         $clearedCollection = $collection->clear();
 
         self::assertNotSame($collection, $clearedCollection);
@@ -22,14 +19,23 @@ final class ClearTraitTest extends TestCase
 
     public function testClearRemovesItems(): void
     {
-        $collection = new class(['foo']) extends \ArrayObject {
-            use ClearTrait;
-        };
-
+        $collection = $this->createCollection(['foo']);
         $clearedCollection = $collection->clear();
         \assert($clearedCollection instanceof \ArrayObject);
 
         self::assertNotEmpty($collection->getArrayCopy());
         self::assertEmpty($clearedCollection->getArrayCopy());
+    }
+
+    /**
+     * @param string[] $elements
+     */
+    protected function createCollection(array $elements): \ArrayObject
+    {
+        // phpcs:disable
+        return new class($elements) extends \ArrayObject {
+            use ClearTrait;
+        };
+        // phpcs:enable
     }
 }

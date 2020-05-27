@@ -24,19 +24,12 @@ final class CollectionTraitTest extends TestCase
             ->method('isFoobar')
             ->willReturn(true);
 
-        $extendedClass = new class([$element1, $element2]) extends Collection {
-            public function firstHaving(callable $callback): \stdClass
-            {
-                {
-                    return parent::firstHaving($callback);
-                }
-            }
-        };
+        $collection = $this->createCollection([$element1, $element2]);
 
         self::assertSame(
             $element2,
-            $extendedClass->firstHaving(
-                static function (\stdClass $element): \stdClass {
+            $collection->firstHaving(
+                static function (\stdClass $element): bool {
                     return $element->isFoobar();
                 }
             )
@@ -58,21 +51,14 @@ final class CollectionTraitTest extends TestCase
             ->method('isFoobar')
             ->willReturn(false);
 
-        $extendedClass = new class([$element1, $element2]) extends Collection {
-            public function firstHaving(callable $callback): \stdClass
-            {
-                {
-                    return parent::firstHaving($callback);
-                }
-            }
-        };
+        $collection = $this->createCollection([$element1, $element2]);
 
         $this->expectException(\OutOfBoundsException::class);
 
         self::assertSame(
             $element2,
-            $extendedClass->firstHaving(
-                static function (\stdClass $element): \stdClass {
+            $collection->firstHaving(
+                static function (\stdClass $element): bool {
                     return $element->isFoobar();
                 }
             )
@@ -81,6 +67,7 @@ final class CollectionTraitTest extends TestCase
 
     public function testIsEmpty(): void
     {
+        // phpcs:disable
         $collection1 = new class extends \ArrayObject {
             use CollectionTrait;
         };
@@ -90,9 +77,27 @@ final class CollectionTraitTest extends TestCase
         $collection3 = new class([null]) extends \ArrayObject {
             use CollectionTrait;
         };
+        // phpcs:enable
 
         self::assertTrue($collection1->isEmpty());
         self::assertFalse($collection2->isEmpty());
         self::assertFalse($collection3->isEmpty());
+    }
+
+    /**
+     * @param \stdClass[] $elements
+     */
+    protected function createCollection(array $elements): Collection
+    {
+        // phpcs:disable
+        return new class($elements) extends Collection {
+            public function firstHaving(callable $callback): \stdClass
+            {
+                {
+                    return parent::firstHaving($callback);
+                }
+            }
+        };
+        // phpcs:enable
     }
 }
