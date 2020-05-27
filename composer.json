@@ -20,7 +20,7 @@
     "require-dev": {
         "myonlinestore/coding-standard": "^1.0",
         "phpmd/phpmd": "^2.7",
-        "phpunit/phpunit": "^6"
+        "phpunit/phpunit": "^8.5"
     },
     "config": {
         "vendor-dir": "vendor",
