@@ -8,16 +8,20 @@ use PHPUnit\Framework\TestCase;
 
 final class TypedCollectionTest extends TestCase
 {
-    public function testConstructWillAssertElements()
+    public function testConstructWillAssertElements(): void
     {
-        $collection = new class extends TypedCollection
-        {
+        // phpcs:disable
+        $collection = new class extends TypedCollection {
             public function isAcceptedElement($element): bool
             {
                 return true;
             }
         };
+        // phpcs:enable
 
-        self::assertInstanceOf(TypedCollection::class, new $collection([$this->createMock(\stdClass::class)]));
+        self::assertInstanceOf(
+            TypedCollection::class,
+            new $collection([$this->createMock(\stdClass::class)])
+        );
     }
 }

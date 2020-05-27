@@ -9,21 +9,13 @@ use PHPUnit\Framework\TestCase;
 
 final class CollectionTraitTest extends TestCase
 {
-    public function testClear()
-    {
-        $collection = $this->getMockForTrait(CollectionTrait::class);
-        $clearedCollection = $collection->clear();
-        self::assertNotSame($collection, $clearedCollection);
-        self::assertInstanceOf(\get_class($collection), $clearedCollection);
-    }
-
-    public function testFirstHavingWillReturnCorrectElements()
+    public function testFirstHavingWillReturnCorrectElements(): void
     {
         $element1 = $this->getMockBuilder(\stdClass::class)
-            ->setMethods(['isFoobar'])
+            ->addMethods(['isFoobar'])
             ->getMock();
         $element2 = $this->getMockBuilder(\stdClass::class)
-            ->setMethods(['isFoobar'])
+            ->addMethods(['isFoobar'])
             ->getMock();
         $element1->expects(self::once())
             ->method('isFoobar')
@@ -32,32 +24,25 @@ final class CollectionTraitTest extends TestCase
             ->method('isFoobar')
             ->willReturn(true);
 
-        $extendedClass = new class([$element1, $element2]) extends Collection
-        {
-            public function firstHaving(callable $callback)
-            {
-                {
-                    return parent::firstHaving($callback);
-                }
-            }
-        };
+        $collection = $this->createCollection([$element1, $element2]);
+
         self::assertSame(
             $element2,
-            $extendedClass->firstHaving(
-                static function (\stdClass $element) {
+            $collection->firstHaving(
+                static function (\stdClass $element): bool {
                     return $element->isFoobar();
                 }
             )
         );
     }
 
-    public function testFirstHavingWillThrowExceptionIfNoMatchIsFound()
+    public function testFirstHavingWillThrowExceptionIfNoMatchIsFound(): void
     {
         $element1 = $this->getMockBuilder(\stdClass::class)
-            ->setMethods(['isFoobar'])
+            ->addMethods(['isFoobar'])
             ->getMock();
         $element2 = $this->getMockBuilder(\stdClass::class)
-            ->setMethods(['isFoobar'])
+            ->addMethods(['isFoobar'])
             ->getMock();
         $element1->expects(self::once())
             ->method('isFoobar')
@@ -66,44 +51,53 @@ final class CollectionTraitTest extends TestCase
             ->method('isFoobar')
             ->willReturn(false);
 
-        $extendedClass = new class([$element1, $element2]) extends Collection
-        {
-            public function firstHaving(callable $callback)
-            {
-                {
-                    return parent::firstHaving($callback);
-                }
-            }
-        };
+        $collection = $this->createCollection([$element1, $element2]);
 
         $this->expectException(\OutOfBoundsException::class);
 
         self::assertSame(
             $element2,
-            $extendedClass->firstHaving(
-                static function (\stdClass $element) {
+            $collection->firstHaving(
+                static function (\stdClass $element): bool {
                     return $element->isFoobar();
                 }
             )
         );
     }
 
-    public function testIsEmpty()
+    public function testIsEmpty(): void
     {
-        $collection1 = new class extends \ArrayObject
-        {
+        // phpcs:disable
+        $collection1 = new class extends \ArrayObject {
             use CollectionTrait;
         };
-        $collection2 = new class(['foo']) extends \ArrayObject
-        {
+        $collection2 = new class(['foo']) extends \ArrayObject {
             use CollectionTrait;
         };
-        $collection3 = new class([null]) extends \ArrayObject
-        {
+        $collection3 = new class([null]) extends \ArrayObject {
             use CollectionTrait;
         };
+        // phpcs:enable
+
         self::assertTrue($collection1->isEmpty());
         self::assertFalse($collection2->isEmpty());
         self::assertFalse($collection3->isEmpty());
+    }
+
+    /**
+     * @param \stdClass[] $elements
+     */
+    protected function createCollection(array $elements): Collection
+    {
+        // phpcs:disable
+        return new class($elements) extends Collection {
+            public function firstHaving(callable $callback): \stdClass
+            {
+                {
+                    return parent::firstHaving($callback);
+                }
+            }
+        };
+        // phpcs:enable
     }
 }

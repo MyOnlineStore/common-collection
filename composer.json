@@ -15,18 +15,18 @@
         }
     },
     "require": {
-        "php": "^7.0"
+        "php": "^7.2"
     },
     "require-dev": {
         "myonlinestore/coding-standard": "^1.0",
         "phpmd/phpmd": "^2.7",
-        "phpunit/phpunit": "^6"
+        "phpunit/phpunit": "^8.5"
     },
     "config": {
         "vendor-dir": "vendor",
         "sort-packages": true,
         "platform": {
-            "php": "7.0.33"
+            "php": "7.2.0"
         }
     }
 }

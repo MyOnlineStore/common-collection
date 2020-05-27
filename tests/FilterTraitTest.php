@@ -9,13 +9,13 @@ use PHPUnit\Framework\TestCase;
 
 final class FilterTraitTest extends TestCase
 {
-    public function testFirstHavingWillThrowExceptionIfNoMatchIsFound()
+    public function testFirstHavingWillThrowExceptionIfNoMatchIsFound(): void
     {
         $element1 = $this->getMockBuilder(\stdClass::class)
-            ->setMethods(['isFoobar'])
+            ->addMethods(['isFoobar'])
             ->getMock();
         $element2 = $this->getMockBuilder(\stdClass::class)
-            ->setMethods(['isFoobar'])
+            ->addMethods(['isFoobar'])
             ->getMock();
         $element1->expects(self::once())
             ->method('isFoobar')
@@ -24,10 +24,10 @@ final class FilterTraitTest extends TestCase
             ->method('isFoobar')
             ->willReturn(true);
 
-        $extendedClass = new class([$element1, $element2]) extends Collection {
+        $collection = new class([$element1, $element2]) extends Collection {
             use FilterTrait;
 
-            public function filterOnlyFoobar()
+            public function filterOnlyFoobar(): self
             {
                 return $this->filter(
                     static function (\stdClass $stdClass): bool {
@@ -38,8 +38,8 @@ final class FilterTraitTest extends TestCase
         };
 
         self::assertEquals(
-            new $extendedClass([$element2]),
-            $extendedClass->filterOnlyFoobar()
+            new $collection([$element2]),
+            $collection->filterOnlyFoobar()
         );
     }
 }

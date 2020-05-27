@@ -10,7 +10,7 @@ trait TypedIndexedCollectionTrait
     /**
      * @throws \InvalidArgumentException
      */
-    public function assertAcceptedIndex(string $index)
+    public function assertAcceptedIndex(string $index): void
     {
         if (!$this->isAcceptedIndex($index)) {
             throw new \InvalidArgumentException(
@@ -24,7 +24,7 @@ trait TypedIndexedCollectionTrait
      *
      * @throws \InvalidArgumentException
      */
-    public function assertArray(array $array)
+    public function assertArray(array $array): void
     {
         foreach ($array as $index => $element) {
             // Cast to string since PHP converted numeric strings to integers

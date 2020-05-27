@@ -8,33 +8,29 @@ use PHPUnit\Framework\TestCase;
 
 final class TypedIndexedCollectionTraitTest extends TestCase
 {
-    public function testAssertArray()
+    public function testAssertAcceptedIndexWillDoNothingOnAcceptedElement(): void
     {
         $index = 'foo';
-        $element = new \stdClass();
 
         $typedCollection = $this->getMockBuilder(TypedIndexedCollectionTrait::class)
-            ->setMethods(['assertAcceptedIndex', 'assertAcceptedElement'])
+            ->onlyMethods(['isAcceptedIndex'])
             ->getMockForTrait();
 
         $typedCollection->expects(self::once())
-            ->method('assertAcceptedIndex')
-            ->with($index);
-
-        $typedCollection->expects(self::once())
-            ->method('assertAcceptedElement')
-            ->with($element);
+            ->method('isAcceptedIndex')
+            ->with($index)
+            ->willReturn(true);
 
         /** @noinspection PhpUndefinedMethodInspection */
-        $typedCollection->assertArray([$index => $element]);
+        $typedCollection->assertAcceptedIndex($index);
     }
 
-    public function testAssertAcceptedIndexWillThrowExceptionOnUnacceptedElement()
+    public function testAssertAcceptedIndexWillThrowExceptionOnUnacceptedElement(): void
     {
         $index = 'foo';
 
         $typedCollection = $this->getMockBuilder(TypedIndexedCollectionTrait::class)
-            ->setMethods(['isAcceptedIndex'])
+            ->onlyMethods(['isAcceptedIndex'])
             ->getMockForTrait();
 
         $typedCollection->expects(self::once())
@@ -48,20 +44,24 @@ final class TypedIndexedCollectionTraitTest extends TestCase
         $typedCollection->assertAcceptedIndex($index);
     }
 
-    public function testAssertAcceptedIndexWillDoNothingOnAcceptedElement()
+    public function testAssertArray(): void
     {
         $index = 'foo';
+        $element = new \stdClass();
 
         $typedCollection = $this->getMockBuilder(TypedIndexedCollectionTrait::class)
-            ->setMethods(['isAcceptedIndex'])
+            ->onlyMethods(['assertAcceptedIndex', 'assertAcceptedElement'])
             ->getMockForTrait();
 
         $typedCollection->expects(self::once())
-            ->method('isAcceptedIndex')
-            ->with($index)
-            ->willReturn(true);
+            ->method('assertAcceptedIndex')
+            ->with($index);
+
+        $typedCollection->expects(self::once())
+            ->method('assertAcceptedElement')
+            ->with($element);
 
         /** @noinspection PhpUndefinedMethodInspection */
-        $typedCollection->assertAcceptedIndex($index);
+        $typedCollection->assertArray([$index => $element]);
     }
 }
