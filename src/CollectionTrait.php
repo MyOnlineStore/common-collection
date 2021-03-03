@@ -17,9 +17,9 @@ trait CollectionTrait
      */
     protected function firstHaving(callable $callback)
     {
-        foreach ($this as $entry) {
-            if ($callback($entry)) {
-                return $entry;
+        foreach ($this as $element) {
+            if ($callback($element)) {
+                return $element;
             }
         }
 
