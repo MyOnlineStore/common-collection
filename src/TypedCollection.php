@@ -19,4 +19,15 @@ abstract class TypedCollection extends \ArrayObject
 
         parent::__construct($elements);
     }
+
+    /**
+     * @inheritDoc
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function append($value): void
+    {
+        $this->assertAcceptedElement($value);
+        parent::append($value);
+    }
 }
