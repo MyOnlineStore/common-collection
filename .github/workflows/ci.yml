@@ -1,0 +1,70 @@
+name: Backend CI
+
+on:
+  push:
+    branches-ignore:
+      - 'master'
+    tags-ignore:
+      - '**'
+    paths:
+      - '**.php'
+      - '**.yml'
+      - '**.yaml'
+      - 'app/schema/**.xml'
+      - 'composer.lock'
+      - 'phpcs.xml.dist'
+      - 'phpunit.xml.dist'
+      - 'psalm.xml'
+      - 'psalm-baseline.xml'
+
+jobs:
+  test:
+    name: Test
+
+    runs-on: ubuntu-18.04
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version:
+          - '7.2'
+          - '7.3'
+          - '7.4'
+          - '8.0'
+
+    env:
+      APP_ENV: prod
+      APP_DEBUG: 0
+      COMPOSER_TOKEN: ${{ secrets.MOS_EU_GITHUB_TOKEN }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      # Setup Environment
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version}}
+          coverage: none
+          extensions: bcmath, exif, gd, gmp, imagick, intl, mysqli, opcache, pcntl, pdo_mysql, redis, soap, sockets, tidy, zip
+          ini-values: date.timezone=Europe/Amsterdam, assert.exception=1, zend.assertions=1
+          tools: cs2pr, pecl
+
+      # Install Dependencies
+      - uses: actions/cache@v2
+        with:
+          path: |
+            ~/.composer/cache
+            vendor
+          key: php-${{ matrix.php-version}}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: php-${{ matrix.php-version}}-composer-
+      - run: composer install --no-interaction --no-suggest
+
+     # Tests
+      - name: Codestyle
+        run: php vendor/bin/phpcs --sniffs=Generic.Arrays.ArrayIndent,PSR2.Files.EndFileNewline,PSR12.Classes.ClassInstantiation,PSR2.Methods.FunctionCallSignature,PSR12.ControlStructures.ControlStructureSpacing,SlevomatCodingStandard.Classes.TraitUseSpacing,SlevomatCodingStandard.Commenting.DocCommentSpacing,SlevomatCodingStandard.Commenting.ForbiddenAnnotations,SlevomatCodingStandard.Commenting.RequireOneLinePropertyDocComment,SlevomatCodingStandard.Commenting.UselessFunctionDocComment,SlevomatCodingStandard.Commenting.UselessInheritDocComment,SlevomatCodingStandard.ControlStructures.BlockControlStructureSpacing,SlevomatCodingStandard.ControlStructures.JumpStatementsSpacing,SlevomatCodingStandard.ControlStructures.RequireNullCoalesceOperator,SlevomatCodingStandard.ControlStructures.RequireYodaComparison,SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly,SlevomatCodingStandard.Functions.StaticClosure,SlevomatCodingStandard.Namespaces.AlphabeticallySortedUses,SlevomatCodingStandard.Namespaces.FullyQualifiedGlobalConstants,SlevomatCodingStandard.Namespaces.FullyQualifiedGlobalFunctions,SlevomatCodingStandard.Namespaces.ReferenceUsedNamesOnly,SlevomatCodingStandard.Namespaces.UselessAlias,SlevomatCodingStandard.Namespaces.UseSpacing,SlevomatCodingStandard.Namespaces.UnusedUses,SlevomatCodingStandard.TypeHints.LongTypeHints,SlevomatCodingStandard.TypeHints.NullableTypeForNullDefaultValue,SlevomatCodingStandard.TypeHints.NullTypeHintOnLastPosition,SlevomatCodingStandard.TypeHints.ReturnTypeHintSpacing,SlevomatCodingStandard.TypeHints.UselessConstantTypeHint,Squiz.Commenting.DocCommentAlignment,Squiz.Functions.MultiLineFunctionDeclaration,Squiz.WhiteSpace.SuperfluousWhitespace --parallel=`nproc --all` -q --report=checkstyle src | cs2pr
+
+      - name: Setup Problem Matchers
+        run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+
+      - name: Unit Tests
+        run: vendor/bin/phpunit
