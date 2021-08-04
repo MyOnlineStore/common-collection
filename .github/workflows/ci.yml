@@ -1,4 +1,4 @@
-name: Backend CI
+name: CI
 
 on:
   push:
@@ -8,14 +8,9 @@ on:
       - '**'
     paths:
       - '**.php'
-      - '**.yml'
-      - '**.yaml'
-      - 'app/schema/**.xml'
       - 'composer.lock'
       - 'phpcs.xml.dist'
       - 'phpunit.xml.dist'
-      - 'psalm.xml'
-      - 'psalm-baseline.xml'
 
 jobs:
   test:
@@ -61,7 +56,7 @@ jobs:
 
      # Tests
       - name: Codestyle
-        run: php vendor/bin/phpcs --sniffs=Generic.Arrays.ArrayIndent,PSR2.Files.EndFileNewline,PSR12.Classes.ClassInstantiation,PSR2.Methods.FunctionCallSignature,PSR12.ControlStructures.ControlStructureSpacing,SlevomatCodingStandard.Classes.TraitUseSpacing,SlevomatCodingStandard.Commenting.DocCommentSpacing,SlevomatCodingStandard.Commenting.ForbiddenAnnotations,SlevomatCodingStandard.Commenting.RequireOneLinePropertyDocComment,SlevomatCodingStandard.Commenting.UselessFunctionDocComment,SlevomatCodingStandard.Commenting.UselessInheritDocComment,SlevomatCodingStandard.ControlStructures.BlockControlStructureSpacing,SlevomatCodingStandard.ControlStructures.JumpStatementsSpacing,SlevomatCodingStandard.ControlStructures.RequireNullCoalesceOperator,SlevomatCodingStandard.ControlStructures.RequireYodaComparison,SlevomatCodingStandard.Exceptions.ReferenceThrowableOnly,SlevomatCodingStandard.Functions.StaticClosure,SlevomatCodingStandard.Namespaces.AlphabeticallySortedUses,SlevomatCodingStandard.Namespaces.FullyQualifiedGlobalConstants,SlevomatCodingStandard.Namespaces.FullyQualifiedGlobalFunctions,SlevomatCodingStandard.Namespaces.ReferenceUsedNamesOnly,SlevomatCodingStandard.Namespaces.UselessAlias,SlevomatCodingStandard.Namespaces.UseSpacing,SlevomatCodingStandard.Namespaces.UnusedUses,SlevomatCodingStandard.TypeHints.LongTypeHints,SlevomatCodingStandard.TypeHints.NullableTypeForNullDefaultValue,SlevomatCodingStandard.TypeHints.NullTypeHintOnLastPosition,SlevomatCodingStandard.TypeHints.ReturnTypeHintSpacing,SlevomatCodingStandard.TypeHints.UselessConstantTypeHint,Squiz.Commenting.DocCommentAlignment,Squiz.Functions.MultiLineFunctionDeclaration,Squiz.WhiteSpace.SuperfluousWhitespace --parallel=`nproc --all` -q --report=checkstyle src | cs2pr
+        run: php vendor/bin/phpcs --parallel=`nproc --all` -q --report=checkstyle | cs2pr
 
       - name: Setup Problem Matchers
         run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
