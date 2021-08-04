@@ -40,7 +40,6 @@ jobs:
         with:
           php-version: ${{ matrix.php-version}}
           coverage: none
-          extensions: bcmath, exif, gd, gmp, imagick, intl, mysqli, opcache, pcntl, pdo_mysql, redis, soap, sockets, tidy, zip
           ini-values: date.timezone=Europe/Amsterdam, assert.exception=1, zend.assertions=1
           tools: cs2pr, pecl
 
