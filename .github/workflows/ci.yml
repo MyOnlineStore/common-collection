@@ -1,0 +1,64 @@
+name: CI
+
+on:
+  push:
+    branches-ignore:
+      - 'master'
+    tags-ignore:
+      - '**'
+    paths:
+      - '**.php'
+      - 'composer.lock'
+      - 'phpcs.xml.dist'
+      - 'phpunit.xml.dist'
+
+jobs:
+  test:
+    name: Test (PHP ${{ matrix.php-version }})
+
+    runs-on: ubuntu-18.04
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version:
+          - '7.2'
+          - '7.3'
+          - '7.4'
+          - '8.0'
+
+    env:
+      APP_ENV: prod
+      APP_DEBUG: 0
+      COMPOSER_TOKEN: ${{ secrets.MOS_EU_GITHUB_TOKEN }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      # Setup Environment
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version}}
+          coverage: none
+          ini-values: date.timezone=Europe/Amsterdam, assert.exception=1, zend.assertions=1
+          tools: cs2pr, pecl
+
+      # Install Dependencies
+      - uses: actions/cache@v2
+        with:
+          path: |
+            ~/.composer/cache
+            vendor
+          key: php-${{ matrix.php-version}}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: php-${{ matrix.php-version}}-composer-
+      - run: composer install --no-interaction --no-suggest
+
+     # Tests
+      - name: Codestyle
+        run: php vendor/bin/phpcs --parallel=`nproc --all` -q --report=checkstyle | cs2pr
+
+      - name: Setup Problem Matchers
+        run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+
+      - name: Unit Tests
+        run: vendor/bin/phpunit

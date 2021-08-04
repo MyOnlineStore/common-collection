@@ -1,6 +1,6 @@
 # MyOnlineStore Common Collection
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
-[![Build Status](https://travis-ci.org/MyOnlineStore/common-collection.svg?branch=master)](https://travis-ci.org/MyOnlineStore/common-collection)
+[![Build Status](https://github.com/MyOnlineStore/common-collection/actions/workflows/ci.yml/badge.svg)](https://github.com/MyOnlineStore/common-collection/actions/workflows/ci.yml)
 
 ## Install
 Install using composer
